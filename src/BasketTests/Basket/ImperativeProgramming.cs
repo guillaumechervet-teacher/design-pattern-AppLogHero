@@ -48,7 +48,7 @@ namespace Basket
             return amountTotal;
         }
 
-        private static ArticleDatabase GetFromDatabase(string articleId)
+        public static ArticleDatabase GetFromDatabase(string articleId)
         {
             var codeBase = Assembly.GetExecutingAssembly().CodeBase;
             var uri = new UriBuilder(codeBase);
