@@ -14,4 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="Basket\Basket.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Basket\OrientedObject\Domain\Article.cs" />
+  </ItemGroup>
 </Project>
