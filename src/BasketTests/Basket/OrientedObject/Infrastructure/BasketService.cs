@@ -9,6 +9,12 @@ namespace Basket.OrientedObject.Infrastructure
 {
     public class BasketService
     {
+
+        public BasketService(ArticleDataBaseJson articleDataBaseJson)
+        {
+            articleDataBaseJson = articleDataBaseJson;
+        }
+        
         public static ArticleDatabase GetArticleDatabaseMock(string id)
         {
             switch (id)
@@ -54,7 +60,8 @@ namespace Basket.OrientedObject.Infrastructure
             foreach (var basketLineArticle in basketLineArticles)
             {
                 var articleId = basketLineArticle.Id;
-                var articleDatabase = GetFromDatabase(articleId);
+                var articleDataBaseJson = new ArticleDataBaseJson();
+                var articleDatabase = articleDataBaseJson.GetArticle(articleId);
 
             }
 
@@ -62,6 +69,7 @@ namespace Basket.OrientedObject.Infrastructure
         }
 
 
+        /*
         private static ArticleDatabase GetFromDatabase(string articleId)
         {
             // Retreive article from database
@@ -75,5 +83,6 @@ namespace Basket.OrientedObject.Infrastructure
             var article = articleDatabases.First(articleDatabase => articleDatabase.Id == articleId);
             return article;
         }
+        */
     }
 }

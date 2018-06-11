@@ -106,11 +106,10 @@ namespace BasketTests
 
         [TestMethod]
         [DynamicData("Baskets")]
-        public void ReturnCorrectAmoutGivenBasket(BasketTest basketTest)
-        {
-            var basketLineArticles = basketTest.BasketLineArticles;
-            var amountTotal = ImperativeProgramming.AmountTotal(basketLineArticles);
-            Assert.AreEqual(amountTotal, basketTest.ExpectedPrice);
+        public void ReturnCorrectAmoutGivenBasket(BasketTest basketTest) {
+            var basKetService = new BasketService(new ArticleDataBaseJson());
+            var basketOperation = new BasketOperation(basKetService);
+            var amountTotal = basketOperation.CalculateAmout(basketTest.BasketLineArticles); Assert.AreEqual(amountTotal, basketTest.ExpectedPrice);
         }
 
         
