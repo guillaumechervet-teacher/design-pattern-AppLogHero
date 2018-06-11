@@ -12,9 +12,47 @@ using Newtonsoft.Json;
 
 namespace BasketTests
 {
-    [TestClass]
-    public class BasketOperation_CalculateBasketAmoutShould
+     [TestClass]
+    public class BasketOperation_CalculateBasketAmountShould
     {
+        public static ArticleDatabase GetArticleDatabaseMock(string id)
+        {
+            switch (id)
+            {
+                case "1":
+                    return new ArticleDatabase
+                    {
+                        Id = "1",
+                        Price = 1,
+                        Stock =
+                            35,
+                        Label = "Banana",
+                        Category = "food"
+                    };
+                case "2":
+                    return new ArticleDatabase
+                    {
+                        Id = "2",
+                        Price = 500,
+                        Stock = 20,
+                        Label = "Fridge electrolux",
+                        Category = "electronic"
+                    };
+                case "3":
+                    return new ArticleDatabase
+                    {
+                        Id = "3",
+                        Price = 49,
+                        Stock =
+                            68,
+                        Label = "Chair",
+                        Category = "desktop"
+                    };
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
         public class BasketTest
         {
             public List<BasketLineArticle> BasketLineArticles { get; set; }
@@ -66,23 +104,15 @@ namespace BasketTests
             }
         }
 
-        /*[TestMethod]
-        [DynamicData("Baskets")]
-        public void ReturnCorrectAmoutGivenBasket(BasketTest basketTest)
-        {
-            var basketLineArticles = basketTest.BasketLineArticles;
-            var amountTotal = ImperativeProgramming.CalculateBasketAmount(basketLineArticles);
-            Assert.AreEqual(amountTotal, basketTest.ExpectedPrice);
-        }*/
-        
         [TestMethod]
         [DynamicData("Baskets")]
         public void ReturnCorrectAmoutGivenBasket(BasketTest basketTest)
         {
-            var basKetService = new BasketService();
-            var basketOperation = new BasketOperation(basKetService);
-            var amountTotal = basketOperation.CalculateAmout(basketTest.BasketLineArticles); Assert.AreEqual(amountTotal, basketTest.ExpectedPrice);
+            var basketLineArticles = basketTest.BasketLineArticles;
+            var amountTotal = ImperativeProgramming.AmountTotal(basketLineArticles);
+            Assert.AreEqual(amountTotal, basketTest.ExpectedPrice);
         }
 
+        
     }
 }

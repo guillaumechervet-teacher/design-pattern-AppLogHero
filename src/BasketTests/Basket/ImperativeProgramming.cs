@@ -10,37 +10,20 @@ namespace Basket
     public class ImperativeProgramming
     {
         
-        public static int CalculateBasketAmount(List<BasketLineArticle> basketLineArticles)
+        public static int AmountTotal(List<BasketLineArticle> basketLineArticles)
         {
-
             var amountTotal = 0;
-            
             foreach (var basketLineArticle in basketLineArticles)
             {
-
+                
                 var articleId = basketLineArticle.Id;
-                
                 #if DEBUG
-                    var article = GetArticleDatabaseMock(basketLineArticle.Id);
+                var article = GetArticleDatabaseMock(basketLineArticle.Id);
                 #else
-                    var article = GetFromDatabase(articleId);
+                var article = GetArticleDatabase(basketLineArticle.Id);
                 #endif
-                
-                
-                var amount = 0;
-                
-                switch (article.Category)
-                {
-                    case "food":
-                        amount += article.Price * 100 + article.Price * 12;
-                        break;
-                    case "electronic":
-                        amount += article.Price * 100 + article.Price * 20 + 4;
-                        break;
-                    case "desktop":
-                        amount += article.Price * 100 + article.Price * 20;
-                        break;
-                }
+
+                int amount = CalculateBasketAmount(article);
 
                 amountTotal += amount * basketLineArticle.Number;
             }
@@ -48,26 +31,53 @@ namespace Basket
             return amountTotal;
         }
 
-        public static ArticleDatabase GetFromDatabase(string articleId)
+        private static ArticleDatabase GetFromDatabase(string articleId)
         {
+           
             var codeBase = Assembly.GetExecutingAssembly().CodeBase;
             var uri = new UriBuilder(codeBase);
             var path = Uri.UnescapeDataString(uri.Path);
             var assemblyDirectory = Path.GetDirectoryName(path);
             var jsonPath = Path.Combine(assemblyDirectory, "article-database.json");
-            IList < ArticleDatabase > articleDatabases = JsonConvert.DeserializeObject<List<ArticleDatabase>>(File.ReadAllText(jsonPath));
-                
+            IList<ArticleDatabase> articleDatabases = JsonConvert.DeserializeObject<List<ArticleDatabase>>(File.ReadAllText(jsonPath));
             var article = articleDatabases.First(articleDatabase => articleDatabase.Id == articleId);
-
             return article;
         }
-        
+
+        private static int CalculateBasketAmount(ArticleDatabase article)
+        {
+         
+            var amount = 0;
+            switch (article.Category)
+            {
+                case "food":
+                    amount += article.Price * 100 + article.Price * 12;
+                    break;
+                case "electronic":
+                    amount += article.Price * 100 + article.Price * 20 + 4;
+                    break;
+                case "desktop":
+                    amount += article.Price * 100 + article.Price * 20;
+                    break;
+            }
+
+            return amount;
+        }
+
         public static ArticleDatabase GetArticleDatabaseMock(string id)
         {
             switch (id)
             {
                 case "1":
-                    return new ArticleDatabase {Id = "1", Price = 1, Stock = 35, Label = "Banana", Category = "food"};
+                    return new ArticleDatabase
+                    {
+                        Id = "1",
+                        Price = 1,
+                        Stock =
+                            35,
+                        Label = "Banana",
+                        Category = "food"
+                    };
                 case "2":
                     return new ArticleDatabase
                     {
@@ -78,7 +88,15 @@ namespace Basket
                         Category = "electronic"
                     };
                 case "3":
-                    return new ArticleDatabase {Id = "3", Price = 49, Stock = 68, Label = "Chair", Category = "desktop"};
+                    return new ArticleDatabase
+                    {
+                        Id = "3",
+                        Price = 49,
+                        Stock =
+                            68,
+                        Label = "Chair",
+                        Category = "desktop"
+                    };
                 default:
                     throw new NotImplementedException();
             }
