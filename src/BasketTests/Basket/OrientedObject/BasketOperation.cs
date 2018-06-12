@@ -13,7 +13,7 @@ namespace Basket.OrientedObject
             
         }
 
-        public int Calcultae(List<BasketLineArticle> basketLineArticles)
+        public int CalculateAmount(List<BasketLineArticle> basketLineArticles)
         {
             var basket = _basketService.GetBasket(basketLineArticles);
             return basket.Calulate();

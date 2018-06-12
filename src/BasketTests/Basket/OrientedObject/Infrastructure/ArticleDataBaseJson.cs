@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace Basket.OrientedObject.Infrastructure
 {
-    public class ArticleDataBaseJson
+    public class ArticleDataBaseJson: IArticleDatabase
     {
         public ArticleDatabase GetArticle(string id)
         {

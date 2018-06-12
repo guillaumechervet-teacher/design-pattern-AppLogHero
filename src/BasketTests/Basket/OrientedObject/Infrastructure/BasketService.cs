@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Basket.OrientedObject.Domain.Model;
 using Newtonsoft.Json;
 
 namespace Basket.OrientedObject.Infrastructure
@@ -10,9 +11,9 @@ namespace Basket.OrientedObject.Infrastructure
     public class BasketService
     {
 
-        public BasketService(ArticleDataBaseJson articleDataBaseJson)
+        public BasketService(ArticleDatabase articleDatabase)
         {
-            articleDataBaseJson = articleDataBaseJson;
+            articleDatabase = articleDatabase;
         }
         
         public static ArticleDatabase GetArticleDatabaseMock(string id)
@@ -60,8 +61,10 @@ namespace Basket.OrientedObject.Infrastructure
             foreach (var basketLineArticle in basketLineArticles)
             {
                 var articleId = basketLineArticle.Id;
-                var articleDataBaseJson = new ArticleDataBaseJson();
-                var articleDatabase = articleDataBaseJson.GetArticle(articleId);
+                IArticleDatabase articleDataBase = new ArticleDataBaseJson();
+                var articleDatabase = articleDataBase.GetArticle(articleId);
+                list.Add(new BasketLine(new Article(articleDatabase.Price, articleDatabase.Category), basketLineArticle.Number));
+                
 
             }
 
